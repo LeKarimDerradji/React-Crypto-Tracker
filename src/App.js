@@ -10,6 +10,7 @@ function App() {
 
   const [coins, setCoins] = useState([])
   const [search, setSearch] = useState('')
+  let [sorted, setSorted] = useState(false)
 
   useEffect(() => {
 
@@ -27,9 +28,20 @@ function App() {
   }
 
 
-  const filteredCoins = coins.filter(coin => 
+  let filteredCoins = coins.filter(coin => 
     coin.name.toLowerCase().includes(search.toLowerCase())
   )
+
+  const sortByPrice = () => {
+    setSorted(sorted = !sorted)
+    console.log(sorted)
+    sorted ?
+    setCoins(filteredCoins.sort((a, b) => (a.current_price > b.current_price) ? 1 : -1))
+    : setCoins(filteredCoins.sort((a, b) => (a.current_price < b.current_price) ? 1 : -1))
+}
+  
+
+
 
 
   return (
@@ -46,7 +58,7 @@ function App() {
         </form>
 
       </div>
-        <Header/>
+        <Header sortByPrice={sortByPrice}/>
        {filteredCoins.map(coin => { // Mapping trought the API_Coin Object, Rendering wanted elements. 
         return (<Coin 
           key={coin.id} 
