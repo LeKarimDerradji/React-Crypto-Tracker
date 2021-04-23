@@ -33,13 +33,37 @@ function App() {
   )
 
   const sortByPrice = () => {
-    setSorted(sorted = !sorted)
+    setSorted(!sorted)
     console.log(sorted)
     sorted ?
     setCoins(filteredCoins.sort((a, b) => (a.current_price > b.current_price) ? 1 : -1))
     : setCoins(filteredCoins.sort((a, b) => (a.current_price < b.current_price) ? 1 : -1))
 }
-  
+
+  const sortByVolume = () => {
+    setSorted(!sorted)
+    console.log(sorted)
+    sorted ?
+    setCoins(filteredCoins.sort((a, b) => (a.total_volume > b.total_volume) ? 1 : -1))
+    : setCoins(filteredCoins.sort((a, b) => (a.total_volume < b.total_volume) ? 1 : -1))
+}
+
+const sortByMarketCap = () => {
+    setSorted(!sorted)
+    console.log(sorted)
+    sorted ?
+    setCoins(filteredCoins.sort((a, b) => (a.market_cap > b.market_cap) ? 1 : -1))
+    : setCoins(filteredCoins.sort((a, b) => (a.market_cap < b.market_cap) ? 1 : -1))
+}
+
+const sortByPriceChange = () => {
+    setSorted(!sorted)
+    console.log(sorted)
+    sorted ?
+    setCoins(filteredCoins.sort((a, b) => (a.price_change_percentage_24h > b.price_change_percentage_24h) ? 1 : -1))
+    : setCoins(filteredCoins.sort((a, b) => (a.price_change_percentage_24h < b.price_change_percentage_24h) ? 1 : -1))
+}
+
 
 
 
@@ -58,7 +82,10 @@ function App() {
         </form>
 
       </div>
-        <Header sortByPrice={sortByPrice}/>
+        <Header sortByPrice={sortByPrice}
+        sortByVolume={sortByVolume}
+        sortByMarketCap={sortByMarketCap}
+        sortByPriceChange={sortByPriceChange}/>
        {filteredCoins.map(coin => { // Mapping trought the API_Coin Object, Rendering wanted elements. 
         return (<Coin 
           key={coin.id} 

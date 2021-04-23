@@ -1,7 +1,7 @@
 import React from 'react'
 import './Header.css'
 
-const Header = ({sortByPrice}) => {
+const Header = ({sortByPrice, sortByVolume, sortByMarketCap, sortByPriceChange}) => {
     return (
         <div className='coin-container'>
             <div className="coin-row">
@@ -11,9 +11,9 @@ const Header = ({sortByPrice}) => {
               </div>
                 <div className="coin-data">
                     <button className="coin-price" onClick={sortByPrice}>Price</button>
-                    <button className="coin-volume">Volume</button>
-                     <button className="coin-percent">Price Change</button>
-                    <button className="coin-marketcap">Market-cap</button>        
+                    <button className="coin-volume" onClick={sortByVolume}>Volume</button>
+                    <button className="coin-percent" onClick={sortByPriceChange}>Price Change</button>
+                    <button className="coin-marketcap" onClick={sortByMarketCap}>Market-cap</button>        
                 </div>
             </div>
         </div>
