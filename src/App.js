@@ -9,8 +9,15 @@ const URL_API = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&
 function App() {
 
   const [coins, setCoins] = useState([])
+  const [filteredCoins, setFilteredCoins] = useState([])
   const [search, setSearch] = useState('')
-  let [sorted, setSorted] = useState(false)
+  let [sorted, setSorted] = useState(false);
+  
+  const handleChange = e => {
+    setSearch(e.target.value)
+    setFilteredCoins(coins.filter(coin => coin.name.toLowerCase().includes(search.toLowerCase())))
+  }
+
 
   useEffect(() => {
 
@@ -23,48 +30,19 @@ function App() {
 
   }, [])
 
-  const handleChange = e => {
-    setSearch(e.target.value)
-  }
 
+console.log(filteredCoins)
 
-  let filteredCoins = coins.filter(coin => 
-    coin.name.toLowerCase().includes(search.toLowerCase())
-  )
-
-  const sortByPrice = () => {
-    setSorted(!sorted)
-    console.log(sorted)
-    sorted ?
-    setCoins(filteredCoins.sort((a, b) => (a.current_price > b.current_price) ? 1 : -1))
-    : setCoins(filteredCoins.sort((a, b) => (a.current_price < b.current_price) ? 1 : -1))
+const sortBy = (attr) => {
+	const wrapper = () => {
+		setSorted(!sorted)
+		console.log(sorted)
+		return sorted ?
+			filteredCoins.sort((a,b) => (a[attr] > b[attr]) ? 1 : -1)
+			: filteredCoins.sort((a,b) => (a[attr] < b[attr]) ? 1 : -1)
+	}
+	return wrapper
 }
-
-  const sortByVolume = () => {
-    setSorted(!sorted)
-    console.log(sorted)
-    sorted ?
-    setCoins(filteredCoins.sort((a, b) => (a.total_volume > b.total_volume) ? 1 : -1))
-    : setCoins(filteredCoins.sort((a, b) => (a.total_volume < b.total_volume) ? 1 : -1))
-}
-
-const sortByMarketCap = () => {
-    setSorted(!sorted)
-    console.log(sorted)
-    sorted ?
-    setCoins(filteredCoins.sort((a, b) => (a.market_cap > b.market_cap) ? 1 : -1))
-    : setCoins(filteredCoins.sort((a, b) => (a.market_cap < b.market_cap) ? 1 : -1))
-}
-
-const sortByPriceChange = () => {
-    setSorted(!sorted)
-    console.log(sorted)
-    sorted ?
-    setCoins(filteredCoins.sort((a, b) => (a.price_change_percentage_24h > b.price_change_percentage_24h) ? 1 : -1))
-    : setCoins(filteredCoins.sort((a, b) => (a.price_change_percentage_24h < b.price_change_percentage_24h) ? 1 : -1))
-}
-
-
 
 
 
@@ -75,17 +53,17 @@ const sortByPriceChange = () => {
         <h1 className="coin-text">Search a currency</h1>
 
         <form action="">
-        <input type="text" placeholder='Seach' 
+        <input type="text" placeholder='Search' 
         name="" 
         id=""
         className="coin-input" onChange={handleChange} />
         </form>
 
       </div>
-        <Header sortByPrice={sortByPrice}
-        sortByVolume={sortByVolume}
-        sortByMarketCap={sortByMarketCap}
-        sortByPriceChange={sortByPriceChange}/>
+        <Header sortByPrice={sortBy('current_price')}
+        sortByVolume={sortBy('total_volume')}
+        sortByMarketCap={sortBy('market_cap')}
+        sortByPriceChange={sortBy('price_change_percentage_24h')}/>
        {filteredCoins.map(coin => { // Mapping trought the API_Coin Object, Rendering wanted elements. 
         return (<Coin 
           key={coin.id} 
